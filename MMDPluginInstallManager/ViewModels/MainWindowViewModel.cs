@@ -106,6 +106,10 @@ namespace MMDPluginInstallManager.ViewModels
 
             set
             {
+                if (_SelectedPluginData == value)
+                {
+                    return;
+                }
                 _SelectedPluginData = value;
                 RaisePropertyChanged();
             }
@@ -121,15 +125,11 @@ namespace MMDPluginInstallManager.ViewModels
         {
             get
             {
-                if (_OpenDownloadLinkCommand == null)
-                {
-                    _OpenDownloadLinkCommand = new ViewModelCommand(OpenDownloadLink);
-                }
-                return _OpenDownloadLinkCommand;
+                return _OpenDownloadLinkCommand ?? (_OpenDownloadLinkCommand = new ViewModelCommand(OpenDownloadLink));
             }
         }
 
-        public void OpenDownloadLink()
+        private void OpenDownloadLink()
         {
             Process.Start(SelectedPluginData.Url);
         }

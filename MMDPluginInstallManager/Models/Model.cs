@@ -37,16 +37,8 @@ namespace MMDPluginInstallManager.Models
 
         private MMDPluginData[] _jsonData;
 
-        public ObservableCollection<DownloadPluginData> DownloadPluginList { get; set; } =
+        public ObservableCollection<DownloadPluginData> DownloadPluginList { get; } =
             new ObservableCollection<DownloadPluginData>();
-
-
-        public static string MakeRelative(string filePath, string referencePath)
-        {
-            var fileUri = new Uri(filePath);
-            var referenceUri = new Uri(referencePath);
-            return referenceUri.MakeRelativeUri(fileUri).ToString();
-        }
 
         public void FreeZipFile()
         {
@@ -130,7 +122,7 @@ namespace MMDPluginInstallManager.Models
             }
         }
 
-        public struct DownloadPluginData
+        public class DownloadPluginData
         {
             public float NewVersion { get; set; }
 
