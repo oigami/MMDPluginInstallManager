@@ -1,0 +1,55 @@
+﻿[
+  {
+    "Title": "MMDPlugin",
+    "URL": "https://bowlroll.net/file/121761",
+    "Version": 0.36,
+    "Readme": "MMDPlugin_Readme.txt",
+    "SHA1Hash": "7a277621bc61b7485d080692816de2f2d43d6eaf",
+    "InstallDir": [
+      [ "d3d9.dll", "" ],
+      [ "MMDPlugin.dll", "" ],
+      [ "MMDPlugin_Readme.txt", "plugin/MMDPlugin/" ]
+    ]
+  },
+  {
+    "Title": "MMDUtility",
+    "URL": "https://bowlroll.net/file/121762",
+    "Version": 0.08,
+    "Readme": "MMDUtility_Readme.txt",
+    "SHA1Hash": "608dddd7be7f2cc1342eb329d45e97853b32acbc",
+    "InstallDir": [
+      [ "plugin/", "" ],
+      [ "MMDUtility_Readme.txt", "plugin/MMDUtility" ]
+    ]
+  },
+  {
+    "Title": "Effekseer for MMD",
+    "URL": "https://bowlroll.net/file/121167",
+    "Version": 0.21,
+    "Readme": "EffekseerForMMD_Readme.txt",
+    "InstallDir": [
+      [ "plugin/", "" ],
+      [ "EffekseerForMMD_Readme.txt", "plugin/EffekseerForMMD" ]
+
+    ]
+  },
+  {
+    "Title": "MikuMikuEffect",
+    "URL": "https://bowlroll.net/file/35013",
+    "Version": 0.37,
+    "Readme": "MMEffect_x64_v037/MMEffect.txt",
+    "InstallDir": [
+      [ "MMEffect_x64_v037/", "../plugin/mme/" ]
+    ]
+  },
+  {
+    "Title": "MMAccel",
+    "URL": "https://bowlroll.net/file/89669",
+    "Version": 1.59,
+    "Readme": "MMAccel_64_v1_59/mmaccel_Readme.txt",
+    "InstallDir": [
+      [ "MMAccel_64_v1_59/mmaccel/", "../../plugin/mmaccel/" ],
+      [ "MMAccel_64_v1_59/mmaccel_Readme.txt", "../plugin/mmaccel/" ]
+    ]
+  }
+]
