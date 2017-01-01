@@ -69,16 +69,24 @@ namespace MMDPluginInstallManager.ViewModels
 
         public async Task Drop(string zipPath)
         {
-            if (await _model.InstallPlugin(zipPath))
+            try
             {
-                try
-                {
-                    Process.Start(_model.ReadMePath);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("readme file was not found.\n" + _model.ReadMePath + "\n\n" + e.StackTrace);
-                }
+                await _model.InstallPlugin(zipPath);
+                MessageBox.Show("Install succeeded.");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Install failed.\n" + e.Message + "\n\n" + e.StackTrace);
+                return;
+            }
+
+            try
+            {
+                Process.Start(_model.ReadMePath);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("readme file was not found.\n" + _model.ReadMePath + "\n\n" + e.StackTrace);
             }
         }
 

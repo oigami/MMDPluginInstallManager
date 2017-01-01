@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Livet;
@@ -45,25 +46,16 @@ namespace MMDPluginInstallManager.Models
             _ReadMePath = null;
         }
 
-        public async Task<bool> InstallPlugin(string zipPath)
+        public async Task InstallPlugin(string zipPath)
         {
-            return await Task.Run(() =>
+            await Task.Run(() =>
             {
                 FreeZipFile();
                 var hash = CreateSHA1Hash(zipPath);
-                MMDPluginData loadItem = null;
-
-                foreach (var item in _jsonData)
-                {
-                    if (item.SHA1Hash == hash)
-                    {
-                        loadItem = item;
-                        break;
-                    }
-                }
+                var loadItem = _jsonData.FirstOrDefault(item => item.SHA1Hash == hash);
                 if (loadItem == null)
                 {
-                    return false;
+                    throw new ArgumentException("SHA1 of zip is not equal.");
                 }
 
                 using (var zipArchive = ZipFile.OpenRead(zipPath))
@@ -90,7 +82,6 @@ namespace MMDPluginInstallManager.Models
                         }
                     }
                 }
-                return true;
             });
         }
 

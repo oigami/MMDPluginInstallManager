@@ -37,6 +37,7 @@ namespace MMDPluginInstallManager.Views
                 return;
             }
 
+            Activate();
             foreach (var s in files)
             {
                 if (string.Compare(Path.GetExtension(s), ".zip", StringComparison.OrdinalIgnoreCase) == 0)
