@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
 using Livet;
 using Livet.Commands;
-using Livet.Messaging;
-using Livet.Messaging.IO;
 using Livet.EventListeners;
-using Livet.Messaging.Windows;
-
 using MMDPluginInstallManager.Models;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Threading.Tasks;
-using System.IO.Compression;
 
 namespace MMDPluginInstallManager.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        private PropertyChangedEventListener _listener;
+        private Model _model;
         /* コマンド、プロパティの定義にはそれぞれ
          *
          *  lvcom   : ViewModelCommand
@@ -67,14 +60,41 @@ namespace MMDPluginInstallManager.ViewModels
 
         public ObservableCollection<Model.DownloadPluginData> DownloadPluginList
         {
-            get
-            {
-                return model?.DownloadPluginList;
-            }
+            get { return _model?.DownloadPluginList; }
         }
 
         #endregion DownLoadPluginList変更通知プロパティ
 
+        #region DropCommand
+
+        public async Task Drop(string zipPath)
+        {
+            if (await _model.InstallPlugin(zipPath))
+            {
+                try
+                {
+                    Process.Start(_model.ReadMePath);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("readme file was not found.\n" + _model.ReadMePath + "\n\n" + e.StackTrace);
+                }
+            }
+        }
+
+        #endregion DropCommand
+
+        public void Initialize()
+        {
+            _model = new Model();
+            _listener = new PropertyChangedEventListener(_model)
+            {
+                nameof(_model.DownloadPluginList),
+                (_, __) => RaisePropertyChanged(nameof(DownloadPluginList))
+            };
+
+            _model.LoadPluginData();
+        }
 
         #region SelectedPluginData変更通知プロパティ
 
@@ -92,27 +112,6 @@ namespace MMDPluginInstallManager.ViewModels
         }
 
         #endregion SelectedPluginData変更通知プロパティ
-
-
-        #region DropCommand
-
-        public async Task Drop(string zipPath)
-        {
-            if (await model.InstallPlugin(zipPath))
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(model.ReadMePath);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("readme file was not found.\n" + model.ReadMePath + "\n\n" + e.StackTrace);
-                }
-            }
-        }
-
-        #endregion DropCommand
-
 
         #region OpenDownloadLinkCommand
 
@@ -132,23 +131,9 @@ namespace MMDPluginInstallManager.ViewModels
 
         public void OpenDownloadLink()
         {
-            System.Diagnostics.Process.Start(SelectedPluginData.url);
+            Process.Start(SelectedPluginData.Url);
         }
 
         #endregion OpenDownloadLinkCommand
-
-
-        private PropertyChangedEventListener listener;
-        private Model model;
-
-        public void Initialize()
-        {
-            model = new Model();
-            listener = new PropertyChangedEventListener(model) {
-              nameof(model.DownloadPluginList), (_, __) => RaisePropertyChanged(nameof(DownloadPluginList))
-            };
-
-            model.LoadPluginData();
-        }
     }
 }

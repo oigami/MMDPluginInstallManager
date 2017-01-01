@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Livet;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.IO;
-using Newtonsoft.Json;
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using Livet;
+using Newtonsoft.Json;
 
 namespace MMDPluginInstallManager.Models
 {
+
     #region JsonData
 
     public class MMDPluginData
@@ -38,32 +35,10 @@ namespace MMDPluginInstallManager.Models
          * NotificationObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
          */
 
-        private MMDPluginData[] jsonData;
+        private MMDPluginData[] _jsonData;
 
-        public Model()
-        {
-        }
-
-        public ObservableCollection<DownloadPluginData> DownloadPluginList { get; set; } = new ObservableCollection<DownloadPluginData>();
-
-        #region ReadMePath変更通知プロパティ
-
-        private string _ReadMePath;
-
-        public string ReadMePath
-        {
-            get { return _ReadMePath; }
-
-            set
-            {
-                if (_ReadMePath == value)
-                    return;
-                _ReadMePath = value;
-                RaisePropertyChanged(nameof(ReadMePath));
-            }
-        }
-
-        #endregion ReadMePath変更通知プロパティ
+        public ObservableCollection<DownloadPluginData> DownloadPluginList { get; set; } =
+            new ObservableCollection<DownloadPluginData>();
 
 
         public static string MakeRelative(string filePath, string referencePath)
@@ -73,7 +48,7 @@ namespace MMDPluginInstallManager.Models
             return referenceUri.MakeRelativeUri(fileUri).ToString();
         }
 
-        public void freeZipFile()
+        public void FreeZipFile()
         {
             _ReadMePath = null;
         }
@@ -82,26 +57,29 @@ namespace MMDPluginInstallManager.Models
         {
             return await Task.Run(() =>
             {
-                freeZipFile();
+                FreeZipFile();
                 var hash = CreateSHA1Hash(zipPath);
-                MMDPluginData LoadItem = null;
+                MMDPluginData loadItem = null;
 
-                foreach (var item in jsonData)
+                foreach (var item in _jsonData)
                 {
                     if (item.SHA1Hash == hash)
                     {
-                        LoadItem = item;
+                        loadItem = item;
                         break;
                     }
                 }
-                if (LoadItem == null) return false;
-
-                using (ZipArchive zipArchive = ZipFile.OpenRead(zipPath))
+                if (loadItem == null)
                 {
-                    foreach (ZipArchiveEntry entry in zipArchive.Entries)
+                    return false;
+                }
+
+                using (var zipArchive = ZipFile.OpenRead(zipPath))
+                {
+                    foreach (var entry in zipArchive.Entries)
                     {
                         var filename = entry.FullName.Replace('/', '\\');
-                        foreach (var item in LoadItem.InstallDir)
+                        foreach (var item in loadItem.InstallDir)
                         {
                             var item0 = item[0].Replace('/', '\\');
                             if (filename.StartsWith(item0, StringComparison.OrdinalIgnoreCase))
@@ -111,7 +89,7 @@ namespace MMDPluginInstallManager.Models
                                 Directory.CreateDirectory(Directory.GetParent(path).FullName);
                                 entry.ExtractToFile(path, true);
 
-                                if (String.Compare(filename, LoadItem.Readme, true) == 0)
+                                if (string.Compare(filename, loadItem.Readme, StringComparison.OrdinalIgnoreCase) == 0)
                                 {
                                     ReadMePath = path;
                                 }
@@ -128,13 +106,18 @@ namespace MMDPluginInstallManager.Models
         {
             var text = File.ReadAllText("package_list.json");
 
-            jsonData = JsonConvert.DeserializeObject<MMDPluginData[]>(text);
-            foreach (var item in jsonData)
+            _jsonData = JsonConvert.DeserializeObject<MMDPluginData[]>(text);
+            foreach (var item in _jsonData)
             {
-                DownloadPluginList.Add(new DownloadPluginData { url = item.URL, NewVersion = item.Version, NowVersion = -1, Title = item.Title });
+                DownloadPluginList.Add(new DownloadPluginData
+                {
+                    Url = item.URL,
+                    NewVersion = item.Version,
+                    NowVersion = -1,
+                    Title = item.Title
+                });
             }
             RaisePropertyChanged(nameof(DownloadPluginList));
-
         }
 
         private string CreateSHA1Hash(string zipPath)
@@ -155,8 +138,28 @@ namespace MMDPluginInstallManager.Models
 
             public string Title { get; set; }
 
-            public string url { get; set; }
+            public string Url { get; set; }
         }
-    }
 
+        #region ReadMePath変更通知プロパティ
+
+        private string _ReadMePath;
+
+        public string ReadMePath
+        {
+            get { return _ReadMePath; }
+
+            set
+            {
+                if (_ReadMePath == value)
+                {
+                    return;
+                }
+                _ReadMePath = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion ReadMePath変更通知プロパティ
+    }
 }

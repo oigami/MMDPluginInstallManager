@@ -1,19 +1,7 @@
-﻿using MMDPluginInstallManager.Models;
-using MMDPluginInstallManager.ViewModels;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
+using MMDPluginInstallManager.ViewModels;
 
 namespace MMDPluginInstallManager.Views
 {
@@ -26,7 +14,7 @@ namespace MMDPluginInstallManager.Views
      */
 
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック 
+    /// MainWindow.xaml の相互作用ロジック
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -37,16 +25,21 @@ namespace MMDPluginInstallManager.Views
 
         private async void Window_Drop(object sender, DragEventArgs e)
         {
-            var viewModel = this.DataContext as MainWindowViewModel;
-            if (viewModel == null) return;
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel == null)
+            {
+                return;
+            }
 
-
-            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files == null) return;
+            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files == null)
+            {
+                return;
+            }
 
             foreach (var s in files)
             {
-                if (string.Compare(Path.GetExtension(s), ".zip", true) == 0)
+                if (string.Compare(Path.GetExtension(s), ".zip", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     await viewModel.Drop(s);
                 }
@@ -57,20 +50,25 @@ namespace MMDPluginInstallManager.Views
         {
             e.Effects = DragDropEffects.None;
             e.Handled = true;
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, true) == false) return;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true) == false)
+            {
+                return;
+            }
 
-            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files == null) return;
+            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files == null)
+            {
+                return;
+            }
 
             foreach (var s in files)
             {
-                if (string.Compare(Path.GetExtension(s), ".zip", true) == 0)
+                if (string.Compare(Path.GetExtension(s), ".zip", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     e.Effects = DragDropEffects.Copy;
                     break;
                 }
             }
         }
-
     }
 }

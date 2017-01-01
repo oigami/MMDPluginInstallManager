@@ -70,7 +70,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             TextWrapping="Wrap">
-            <Hyperlink Command="{Binding OpenDownloadLinkCommand}"><Run Text="{Binding SelectedPluginData.url}" /></Hyperlink>
+            <Hyperlink Command="{Binding OpenDownloadLinkCommand}"><Run Text="{Binding SelectedPluginData.Url}" /></Hyperlink>
         </TextBlock>
         <TextBlock
             Width="203"
