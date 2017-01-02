@@ -85,6 +85,20 @@ namespace MMDPluginInstallManager.Models
             });
         }
 
+        public void CheckExeDirectory()
+        {
+            var path = @"MikuMikuDance.exe";
+            if (File.Exists(path) == false)
+            {
+                throw new FileNotFoundException("The MikuMikuDance.exe is not found.");
+            }
+            var hash = CreateSHA1Hash(path);
+            if (hash != "7dbf4f27d6dd14ce77e2e659a69886e3b6739b56")
+            {
+                throw new InvalidOperationException("The MikuMikuDance.exe is wrong.");
+            }
+        }
+
         public void LoadPluginData()
         {
             var text = File.ReadAllText("package_list.json");

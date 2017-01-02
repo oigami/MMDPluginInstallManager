@@ -101,7 +101,15 @@ namespace MMDPluginInstallManager.ViewModels
                 (_, __) => RaisePropertyChanged(nameof(DownloadPluginList))
             };
 
-            _model.LoadPluginData();
+            try
+            {
+                _model.CheckExeDirectory();
+                _model.LoadPluginData();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\n" + e.StackTrace);
+            }
         }
 
         #region SelectedPluginData変更通知プロパティ
