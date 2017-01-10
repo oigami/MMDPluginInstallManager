@@ -1,85 +1,93 @@
 ﻿<Window
-    x:Class="MMDPluginInstallManager.Views.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:v="clr-namespace:MMDPluginInstallManager.Views"
-    xmlns:vm="clr-namespace:MMDPluginInstallManager.ViewModels"
-    Title="MainWindow"
-    Width="525"
-    Height="350"
-    AllowDrop="True"
-    Drop="Window_Drop"
-    PreviewDragOver="Window_PreviewDragOver"
-    mc:Ignorable="d">
+  x:Class="MMDPluginInstallManager.Views.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:v="clr-namespace:MMDPluginInstallManager.Views"
+  xmlns:vm="clr-namespace:MMDPluginInstallManager.ViewModels"
+  Title="MainWindow"
+  Width="525"
+  Height="350"
+  AllowDrop="True"
+  Drop="Window_Drop"
+  PreviewDragOver="Window_PreviewDragOver"
+  mc:Ignorable="d">
 
-    <Window.DataContext>
-        <vm:MainWindowViewModel />
-    </Window.DataContext>
+  <Window.DataContext>
+    <vm:MainWindowViewModel />
+  </Window.DataContext>
 
-    <i:Interaction.Triggers>
+  <i:Interaction.Triggers>
 
-        <!--  Viewに特別な要件が存在しない限りは、トリガーやアクションの自作にこだわらず積極的にコードビハインドを使いましょう  -->
-        <!--  Viewのコードビハインドは、基本的にView内で完結するロジックとViewModelからのイベントの受信(専用リスナを使用する)に限るとトラブルが少なくなります  -->
-        <!--  Livet1.1からはコードビハインドでViewModelのイベントを受信するためのWeakEventLisnterサポートが追加されています  -->
+    <!--  Viewに特別な要件が存在しない限りは、トリガーやアクションの自作にこだわらず積極的にコードビハインドを使いましょう  -->
+    <!--  Viewのコードビハインドは、基本的にView内で完結するロジックとViewModelからのイベントの受信(専用リスナを使用する)に限るとトラブルが少なくなります  -->
+    <!--  Livet1.1からはコードビハインドでViewModelのイベントを受信するためのWeakEventLisnterサポートが追加されています  -->
 
-        <!--  WindowのContentRenderedイベントのタイミングでViewModelのInitializeメソッドが呼ばれます  -->
-        <i:EventTrigger EventName="ContentRendered">
-            <l:LivetCallMethodAction MethodName="Initialize" MethodTarget="{Binding}" />
-        </i:EventTrigger>
+    <!--  WindowのContentRenderedイベントのタイミングでViewModelのInitializeメソッドが呼ばれます  -->
+    <i:EventTrigger EventName="ContentRendered">
+      <l:LivetCallMethodAction
+        MethodName="Initialize"
+        MethodTarget="{Binding}" />
+    </i:EventTrigger>
 
-        <!--  Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます  -->
-        <i:EventTrigger EventName="Closed">
-            <l:DataContextDisposeAction />
-        </i:EventTrigger>
+    <!--  Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます  -->
+    <i:EventTrigger EventName="Closed">
+      <l:DataContextDisposeAction />
+    </i:EventTrigger>
 
-        <!--  WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください  -->
+    <!--  WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください  -->
 
-    </i:Interaction.Triggers>
+  </i:Interaction.Triggers>
 
-    <Grid>
-        <ListView
-            Margin="10,10,218,10"
-            HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
-            SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Title}" Header="Title" />
-                    <GridViewColumn DisplayMemberBinding="{Binding NewVersion}" Header="New Version" />
-                    <GridViewColumn DisplayMemberBinding="{Binding NowVersion}" Header="Now Version" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <TextBlock
-            Width="203"
-            Height="22"
-            Margin="0,10,10,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Text="{Binding SelectedPluginData.Title}"
-            TextWrapping="Wrap" />
-        <TextBlock
-            Width="203"
-            Height="42"
-            Margin="0,37,10,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            TextWrapping="Wrap">
-            <Hyperlink Command="{Binding OpenDownloadLinkCommand}"><Run Text="{Binding SelectedPluginData.Url}" /></Hyperlink>
-        </TextBlock>
-        <TextBlock
-            Width="203"
-            Height="170"
-            Margin="0,139,10,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Text="Please donwload and drag &amp; drop zip file here."
-            TextWrapping="Wrap" />
+  <Grid>
+    <ListView
+      Margin="10,10,218,10"
+      HorizontalContentAlignment="Stretch"
+      ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
+      SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn
+            DisplayMemberBinding="{Binding Title}"
+            Header="Title" />
+          <GridViewColumn
+            DisplayMemberBinding="{Binding NewVersion}"
+            Header="New Version" />
+          <GridViewColumn
+            DisplayMemberBinding="{Binding NowVersion}"
+            Header="Now Version" />
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <TextBlock
+      Width="203"
+      Height="22"
+      Margin="0,10,10,0"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Top"
+      Text="{Binding SelectedPluginData.Title}"
+      TextWrapping="Wrap" />
+    <TextBlock
+      Width="203"
+      Height="42"
+      Margin="0,37,10,0"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Top"
+      TextWrapping="Wrap">
+      <Hyperlink Command="{Binding OpenDownloadLinkCommand}"><Run Text="{Binding SelectedPluginData.Url}" /></Hyperlink>
+    </TextBlock>
+    <TextBlock
+      Width="203"
+      Height="170"
+      Margin="0,139,10,0"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Top"
+      Text="Please donwload and drag &amp; drop zip file here."
+      TextWrapping="Wrap" />
 
-    </Grid>
+  </Grid>
 </Window>
