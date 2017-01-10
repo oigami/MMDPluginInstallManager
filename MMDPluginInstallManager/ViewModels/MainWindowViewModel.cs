@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Livet;
 using Livet.Commands;
 using Livet.EventListeners;
+using Microsoft.Win32;
 using MMDPluginInstallManager.Models;
 
 namespace MMDPluginInstallManager.ViewModels
@@ -92,6 +94,12 @@ namespace MMDPluginInstallManager.ViewModels
 
         #endregion DropCommand
 
+        private static void ExitWindow()
+        {
+            var window = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
+            window?.Close();
+        }
+
         public void Initialize()
         {
             _model = new Model();
@@ -103,13 +111,42 @@ namespace MMDPluginInstallManager.ViewModels
 
             try
             {
-                _model.CheckExeDirectory();
-                _model.LoadPluginData();
+                // 今いるディレクトリにmmdがあるかチェック
+                _model.SetMMDDirectory("");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.Message + "\n\n" + e.StackTrace);
+                // mmdがなかった場合は選択してもらう
+                MessageBox.Show("Choose MikuMikuDance.exe.");
+                var ofd = new OpenFileDialog
+                {
+                    FileName = "MikuMikuDance.exe",
+                    Filter = "exe file(*.exe)|*.exe|all file(*.*)|*.*",
+                    FilterIndex = 1,
+                    Title = "Choose MikuMikuDance.exe"
+                };
+
+
+                if (ofd.ShowDialog() == false)
+                {
+                    // キャンセルした場合は終了する
+                    MessageBox.Show("Canceled, so This program will end.");
+                    ExitWindow();
+                    return;
+                }
+
+                try
+                {
+                    _model.SetMMDDirectory(ofd.FileName);
+                }
+                catch (Exception e)
+                {
+                    // 選択したものが間違っていた場合は終了する
+                    MessageBox.Show(e.Message + "\nThis Program will end.");
+                    ExitWindow();
+                }
             }
+            _model.LoadPluginData();
         }
 
         #region SelectedPluginData変更通知プロパティ

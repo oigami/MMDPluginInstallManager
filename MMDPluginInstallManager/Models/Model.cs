@@ -37,6 +37,7 @@ namespace MMDPluginInstallManager.Models
          */
 
         private MMDPluginData[] _jsonData;
+        private string _installPath;
 
         public ObservableCollection<DownloadPluginData> DownloadPluginList { get; } =
             new ObservableCollection<DownloadPluginData>();
@@ -68,8 +69,7 @@ namespace MMDPluginInstallManager.Models
                             var item0 = item[0].Replace('/', '\\');
                             if (filename.StartsWith(item0, StringComparison.OrdinalIgnoreCase))
                             {
-                                var rel = Directory.GetParent(filename).FullName;
-                                var path = Path.Combine(rel, item[1], Path.GetFileName(filename));
+                                var path = Path.Combine(_installPath, item[1], Path.GetFileName(filename));
                                 Directory.CreateDirectory(Directory.GetParent(path).FullName);
                                 entry.ExtractToFile(path, true);
 
@@ -85,18 +85,22 @@ namespace MMDPluginInstallManager.Models
             });
         }
 
-        public void CheckExeDirectory()
+        public void SetMMDDirectory(string installPath)
         {
-            var path = @"MikuMikuDance.exe";
-            if (File.Exists(path) == false)
+            if (Path.GetFileName(installPath) == string.Empty)
+            {
+                installPath += @"MikuMikuDance.exe";
+            }
+            if (File.Exists(installPath) == false)
             {
                 throw new FileNotFoundException("The MikuMikuDance.exe is not found.");
             }
-            var hash = CreateSHA1Hash(path);
+            var hash = CreateSHA1Hash(installPath);
             if (hash != "7dbf4f27d6dd14ce77e2e659a69886e3b6739b56")
             {
                 throw new InvalidOperationException("The MikuMikuDance.exe is wrong.");
             }
+            _installPath = Directory.GetParent(installPath).FullName;
         }
 
         public void LoadPluginData()
