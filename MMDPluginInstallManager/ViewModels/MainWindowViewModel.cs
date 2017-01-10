@@ -67,9 +67,9 @@ namespace MMDPluginInstallManager.ViewModels
 
         #endregion DownLoadPluginList変更通知プロパティ
 
-        #region DropCommand
+        #region InstallCommand
 
-        public async Task Drop(string zipPath)
+        public async Task InstallCommand(string zipPath)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace MMDPluginInstallManager.ViewModels
             }
         }
 
-        #endregion DropCommand
+        #endregion InstallCommand
 
         private static void ExitWindow()
         {

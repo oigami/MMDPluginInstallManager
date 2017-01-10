@@ -42,7 +42,7 @@ namespace MMDPluginInstallManager.Views
             {
                 if (string.Compare(Path.GetExtension(s), ".zip", StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    await viewModel.Drop(s);
+                    await viewModel.InstallCommand(s);
                 }
             }
         }
