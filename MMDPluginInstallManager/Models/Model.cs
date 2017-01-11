@@ -56,7 +56,7 @@ namespace MMDPluginInstallManager.Models
                 var loadItem = _jsonData.FirstOrDefault(item => item.SHA1Hash == hash);
                 if (loadItem == null)
                 {
-                    throw new ArgumentException("SHA1 of zip is not equal.");
+                    throw new ArgumentException("A hash matching the SHA1 of the zip file was not found.\n");
                 }
 
                 using (var zipArchive = ZipFile.OpenRead(zipPath))

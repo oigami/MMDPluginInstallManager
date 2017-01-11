@@ -74,11 +74,11 @@ namespace MMDPluginInstallManager.ViewModels
             try
             {
                 await _model.InstallPlugin(zipPath);
-                MessageBox.Show("Install succeeded.");
+                MessageBox.Show("Install succeeded.\nfilename=" + zipPath);
             }
             catch (Exception e)
             {
-                MessageBox.Show("Install failed.\n" + e.Message + "\n\n" + e.StackTrace);
+                MessageBox.Show("Install failed.\nfilename=" + zipPath + "\n" + e.Message + "\n\n" + e.StackTrace);
                 return;
             }
 
