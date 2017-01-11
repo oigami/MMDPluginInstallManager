@@ -142,7 +142,7 @@ namespace MMDPluginInstallManager.ViewModels
                 catch (Exception e)
                 {
                     // 選択したものが間違っていた場合は終了する
-                    MessageBox.Show(e.Message + "\nThis Program will end.");
+                    MessageBox.Show(e.Message + "\nThis program will end.");
                     ExitWindow();
                 }
             }

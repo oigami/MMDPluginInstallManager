@@ -98,7 +98,7 @@ namespace MMDPluginInstallManager.Models
             var hash = CreateSHA1Hash(installPath);
             if (hash != "7dbf4f27d6dd14ce77e2e659a69886e3b6739b56")
             {
-                throw new InvalidOperationException("The MikuMikuDance.exe is wrong.");
+                throw new InvalidOperationException("The MikuMikuDance.exe is wrong.\nThis program is only supported for 'MMD ver9.26 x64'.");
             }
             _installPath = Directory.GetParent(installPath).FullName;
         }
