@@ -130,7 +130,7 @@ namespace MMDPluginInstallManager.ViewModels
                 if (ofd.ShowDialog() == false)
                 {
                     // キャンセルした場合は終了する
-                    MessageBox.Show("Canceled, so This program will end.");
+                    MessageBox.Show("Canceled, so this program will end.");
                     ExitWindow();
                     return;
                 }

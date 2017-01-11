@@ -78,7 +78,9 @@
       HorizontalAlignment="Right"
       VerticalAlignment="Top"
       TextWrapping="Wrap">
-      <Hyperlink Command="{Binding OpenDownloadLinkCommand}"><Run Text="{Binding SelectedPluginData.Url}" /></Hyperlink>
+      <Hyperlink Command="{Binding OpenDownloadLinkCommand}">
+        <Run Text="{Binding SelectedPluginData.Url}" />
+      </Hyperlink>
     </TextBlock>
     <TextBlock
       Width="203"
@@ -86,8 +88,11 @@
       Margin="0,139,10,0"
       HorizontalAlignment="Right"
       VerticalAlignment="Top"
-      Text="Please donwload and drag &amp; drop zip file here."
-      TextWrapping="Wrap" />
+      TextWrapping="Wrap">
+      1. Please donwload the zip file from the above link
+      <LineBreak />
+      2. drag &amp; drop the zip file here.
+    </TextBlock>
 
   </Grid>
 </Window>
