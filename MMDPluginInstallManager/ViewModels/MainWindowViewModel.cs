@@ -117,13 +117,13 @@ namespace MMDPluginInstallManager.ViewModels
             catch (Exception)
             {
                 // mmdがなかった場合は選択してもらう
-                MessageBox.Show("Choose MikuMikuDance.exe.");
+                MessageBox.Show("Choose MikuMikuDance.exe (ver9.26 x64).");
                 var ofd = new OpenFileDialog
                 {
                     FileName = "MikuMikuDance.exe",
                     Filter = "exe file(*.exe)|*.exe|all file(*.*)|*.*",
                     FilterIndex = 1,
-                    Title = "Choose MikuMikuDance.exe"
+                    Title = "Choose MikuMikuDance.exe (ver9.26 x64)"
                 };
 
 
