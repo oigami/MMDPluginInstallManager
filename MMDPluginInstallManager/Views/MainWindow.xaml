@@ -83,8 +83,13 @@
       </Hyperlink>
     </TextBlock>
     <Button
+      Width="203"
+      Height="32"
       Margin="0,102,10,0"
-      Content="Select zip" Command="{Binding InstallZipCommand}" HorizontalAlignment="Right" Width="203" Height="32" VerticalAlignment="Top"/>
+      HorizontalAlignment="Right"
+      VerticalAlignment="Top"
+      Command="{Binding InstallZipCommand}"
+      Content="Select zip" />
     <TextBlock
       Width="203"
       Height="170"
@@ -92,7 +97,10 @@
       HorizontalAlignment="Right"
       VerticalAlignment="Top"
       TextWrapping="Wrap">
-      1. Please donwload the zip file from the above link
+      How to install.
+      <LineBreak />
+      <LineBreak />
+      1. Please donwload the zip file from the above link.
       <LineBreak />
       2. 'Select zip' or drag &amp; drop the zip file here.
     </TextBlock>
