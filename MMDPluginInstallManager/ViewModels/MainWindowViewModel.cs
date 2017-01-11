@@ -188,5 +188,37 @@ namespace MMDPluginInstallManager.ViewModels
         }
 
         #endregion OpenDownloadLinkCommand
+
+
+        #region InstallZipCommand
+        private ViewModelCommand _InstallZipCommand;
+
+        public ViewModelCommand InstallZipCommand
+        {
+            get
+            {
+                if (_InstallZipCommand == null)
+                {
+                    _InstallZipCommand = new ViewModelCommand(InstallZip);
+                }
+                return _InstallZipCommand;
+            }
+        }
+
+        public async void InstallZip()
+        {
+            var dlg = new OpenFileDialog()
+            {
+                Filter = "zip file(*.zip)|*.zip|all file(*.*)|*.*",
+                FilterIndex = 1,
+                Title = "Select zip file."
+            };
+            if (dlg.ShowDialog() == true)
+            {
+               await InstallCommand(dlg.FileName);
+            }
+        }
+        #endregion
+
     }
 }

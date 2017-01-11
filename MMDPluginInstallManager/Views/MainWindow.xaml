@@ -82,6 +82,9 @@
         <Run Text="{Binding SelectedPluginData.Url}" />
       </Hyperlink>
     </TextBlock>
+    <Button
+      Margin="0,102,10,0"
+      Content="Select zip" Command="{Binding InstallZipCommand}" HorizontalAlignment="Right" Width="203" Height="32" VerticalAlignment="Top"/>
     <TextBlock
       Width="203"
       Height="170"
@@ -91,7 +94,7 @@
       TextWrapping="Wrap">
       1. Please donwload the zip file from the above link
       <LineBreak />
-      2. drag &amp; drop the zip file here.
+      2. 'Select zip' or drag &amp; drop the zip file here.
     </TextBlock>
 
   </Grid>
