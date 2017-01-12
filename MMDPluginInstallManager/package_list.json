@@ -27,6 +27,7 @@
     "URL": "https://bowlroll.net/file/121167",
     "Version": 0.21,
     "Readme": "EffekseerForMMD_Readme.txt",
+    "SHA1Hash": "0cf1b7abc9bc08542982c7c5c459b132f29f714a",
     "InstallDir": [
       [ "plugin/", "" ],
       [ "EffekseerForMMD_Readme.txt", "plugin/EffekseerForMMD" ]
@@ -38,6 +39,7 @@
     "URL": "https://bowlroll.net/file/35013",
     "Version": 0.37,
     "Readme": "MMEffect_x64_v037/MMEffect.txt",
+    "SHA1Hash": "c9304108d61517e9ba47e05118dda1df6063c14c",
     "InstallDir": [
       [ "MMEffect_x64_v037/", "../plugin/mme/" ]
     ]
@@ -47,6 +49,7 @@
     "URL": "https://bowlroll.net/file/89669",
     "Version": 1.59,
     "Readme": "MMAccel_64_v1_59/mmaccel_Readme.txt",
+    "SHA1Hash": "c2748304aadbf89b961aef6f79f335679c5f9101",
     "InstallDir": [
       [ "MMAccel_64_v1_59/mmaccel/", "../../plugin/mmaccel/" ],
       [ "MMAccel_64_v1_59/mmaccel_Readme.txt", "../plugin/mmaccel/" ]
