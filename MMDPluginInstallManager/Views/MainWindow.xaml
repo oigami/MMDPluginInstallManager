@@ -44,66 +44,76 @@
   </i:Interaction.Triggers>
 
   <Grid>
-    <ListView
-      Margin="10,10,218,10"
-      HorizontalContentAlignment="Stretch"
-      ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
-      SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
-      <ListView.View>
-        <GridView>
-          <GridViewColumn
-            DisplayMemberBinding="{Binding Title}"
-            Header="Title" />
-          <GridViewColumn
-            DisplayMemberBinding="{Binding NewVersion}"
-            Header="New Version" />
-          <GridViewColumn
-            DisplayMemberBinding="{Binding NowVersion}"
-            Header="Now Version" />
-        </GridView>
-      </ListView.View>
-    </ListView>
-    <TextBlock
-      Width="203"
-      Height="22"
-      Margin="0,10,10,0"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Top"
-      Text="{Binding SelectedPluginData.Title}"
-      TextWrapping="Wrap" />
-    <TextBlock
-      Width="203"
-      Height="42"
-      Margin="0,37,10,0"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Top"
-      TextWrapping="Wrap">
-      <Hyperlink Command="{Binding OpenDownloadLinkCommand}">
-        <Run Text="{Binding SelectedPluginData.Url}" />
-      </Hyperlink>
-    </TextBlock>
-    <Button
-      Width="203"
-      Height="32"
-      Margin="0,102,10,0"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Top"
-      Command="{Binding InstallZipCommand}"
-      Content="Select zip" />
-    <TextBlock
-      Width="203"
-      Height="170"
-      Margin="0,139,10,0"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Top"
-      TextWrapping="Wrap">
-      How to install.
-      <LineBreak />
-      <LineBreak />
-      1. Please donwload the zip file from the above link.
-      <LineBreak />
-      2. 'Select zip' or drag &amp; drop the zip file here.
-    </TextBlock>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="300*" />
+      <ColumnDefinition Width="5*" />
+      <ColumnDefinition Width="210*" />
+    </Grid.ColumnDefinitions>
+    <Grid Column="0">
 
+      <ListView
+        Margin="10,10,1,10"
+        HorizontalContentAlignment="Stretch"
+        ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
+        SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
+        <ListView.View>
+          <GridView>
+            <GridViewColumn
+              DisplayMemberBinding="{Binding Title}"
+              Header="Title" />
+            <GridViewColumn
+              DisplayMemberBinding="{Binding NewVersion}"
+              Header="New Version" />
+            <GridViewColumn
+              DisplayMemberBinding="{Binding NowVersion}"
+              Header="Now Version" />
+          </GridView>
+        </ListView.View>
+      </ListView>
+    </Grid>
+    <GridSplitter
+      Background="Transparent"
+      Grid.Column="1"
+      Width="5"
+      HorizontalAlignment="Center" />
+    <Grid Column="2">
+      <VirtualizingStackPanel Orientation="Vertical">
+
+        <TextBlock
+          Height="auto"
+          Margin="5"
+          VerticalAlignment="Top"
+          Text="{Binding SelectedPluginData.Title}"
+          TextWrapping="Wrap" />
+        <TextBlock
+          Height="auto"
+          Margin="5"
+          VerticalAlignment="Top"
+          TextWrapping="Wrap">
+          <Hyperlink Command="{Binding OpenDownloadLinkCommand}">
+            <Run Text="{Binding SelectedPluginData.Url}" />
+          </Hyperlink>
+        </TextBlock>
+        <Button
+          Height="32"
+          Margin="5"
+          VerticalAlignment="Top"
+          Command="{Binding InstallZipCommand}"
+          Content="Select zip" />
+        <TextBlock
+          Height="170"
+          Margin="5"
+          VerticalAlignment="Top"
+          TextWrapping="Wrap">
+          How to install.
+          <LineBreak />
+          <LineBreak />
+          1. Please donwload the zip file from the above link.
+          <LineBreak />
+          2. 'Select zip' or drag &amp; drop the zip file here.
+        </TextBlock>
+      </VirtualizingStackPanel>
+
+    </Grid>
   </Grid>
 </Window>
