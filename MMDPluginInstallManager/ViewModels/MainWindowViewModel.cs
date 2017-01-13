@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace MMDPluginInstallManager.ViewModels
 
         #region DownLoadPluginList変更通知プロパティ
 
-        public ObservableCollection<Model.DownloadPluginData> DownloadPluginList
+        public Dictionary<string, Model.DownloadPluginData>.ValueCollection DownloadPluginList
         {
             get { return _model?.DownloadPluginList; }
         }
@@ -73,22 +74,21 @@ namespace MMDPluginInstallManager.ViewModels
         {
             try
             {
-                await _model.InstallPlugin(zipPath);
+                var installedItem = await _model.InstallPlugin(zipPath);
                 MessageBox.Show("Install succeeded.\nfilename=" + zipPath);
+                try
+                {
+                    Process.Start(installedItem.ReadMeFilePath);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("readme file was not found.\n" + installedItem.ReadMeFilePath + "\n\n"
+                                    + e.StackTrace);
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show("Install failed.\nfilename=" + zipPath + "\n" + e.Message + "\n\n" + e.StackTrace);
-                return;
-            }
-
-            try
-            {
-                Process.Start(_model.ReadMePath);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("readme file was not found.\n" + _model.ReadMePath + "\n\n" + e.StackTrace);
             }
         }
 
@@ -189,8 +189,8 @@ namespace MMDPluginInstallManager.ViewModels
 
         #endregion OpenDownloadLinkCommand
 
-
         #region InstallZipCommand
+
         private ViewModelCommand _InstallZipCommand;
 
         public ViewModelCommand InstallZipCommand
@@ -207,7 +207,7 @@ namespace MMDPluginInstallManager.ViewModels
 
         public async void InstallZip()
         {
-            var dlg = new OpenFileDialog()
+            var dlg = new OpenFileDialog
             {
                 Filter = "zip file(*.zip)|*.zip|all file(*.*)|*.*",
                 FilterIndex = 1,
@@ -215,10 +215,10 @@ namespace MMDPluginInstallManager.ViewModels
             };
             if (dlg.ShowDialog() == true)
             {
-               await InstallCommand(dlg.FileName);
+                await InstallCommand(dlg.FileName);
             }
         }
-        #endregion
 
+        #endregion
     }
 }
