@@ -170,24 +170,19 @@ namespace MMDPluginInstallManager.ViewModels
 
         #endregion SelectedPluginData変更通知プロパティ
 
-        #region OpenDownloadLinkCommand
+        #region OpenLinkCommand
 
-        private ViewModelCommand _OpenDownloadLinkCommand;
+        private ListenerCommand<string> _OpenLinkCommand;
 
-        public ViewModelCommand OpenDownloadLinkCommand
+        public ListenerCommand<string> OpenLinkCommand
+            => _OpenLinkCommand ?? (_OpenLinkCommand = new ListenerCommand<string>(OpenLink));
+
+        public void OpenLink(string parameter)
         {
-            get
-            {
-                return _OpenDownloadLinkCommand ?? (_OpenDownloadLinkCommand = new ViewModelCommand(OpenDownloadLink));
-            }
+            Process.Start(parameter);
         }
 
-        private void OpenDownloadLink()
-        {
-            Process.Start(SelectedPluginData.Url);
-        }
-
-        #endregion OpenDownloadLinkCommand
+        #endregion
 
         #region InstallZipCommand
 

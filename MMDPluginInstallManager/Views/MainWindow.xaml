@@ -72,10 +72,10 @@
       </ListView>
     </Grid>
     <GridSplitter
-      Background="Transparent"
       Grid.Column="1"
       Width="5"
-      HorizontalAlignment="Center" />
+      HorizontalAlignment="Center"
+      Background="Transparent" />
     <Grid Column="2">
       <VirtualizingStackPanel Orientation="Vertical">
 
@@ -90,8 +90,21 @@
           Margin="5"
           VerticalAlignment="Top"
           TextWrapping="Wrap">
-          <Hyperlink Command="{Binding OpenDownloadLinkCommand}">
+          <Hyperlink
+            Command="{Binding OpenLinkCommand}"
+            CommandParameter="{Binding SelectedPluginData.Url}">
             <Run Text="{Binding SelectedPluginData.Url}" />
+          </Hyperlink>
+        </TextBlock>
+        <TextBlock
+          Height="auto"
+          Margin="5"
+          VerticalAlignment="Top"
+          TextWrapping="Wrap">
+          <Hyperlink
+            Command="{Binding OpenLinkCommand}"
+            CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
+            <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
           </Hyperlink>
         </TextBlock>
         <Button
