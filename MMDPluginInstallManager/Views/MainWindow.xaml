@@ -78,35 +78,39 @@
       Background="Transparent" />
     <Grid Column="2">
       <VirtualizingStackPanel Orientation="Vertical">
+        <GroupBox Header="Infomation">
+          <VirtualizingStackPanel Orientation="Vertical">
+            <TextBlock
+              Height="auto"
+              Margin="5"
+              VerticalAlignment="Top"
+              Text="{Binding SelectedPluginData.Title}"
+              TextWrapping="Wrap" />
+            <TextBlock
+              Height="auto"
+              Margin="5"
+              VerticalAlignment="Top"
+              TextWrapping="Wrap">
+              <Hyperlink
+                Command="{Binding OpenLinkCommand}"
+                CommandParameter="{Binding SelectedPluginData.Url}">
+                <Run Text="{Binding SelectedPluginData.Url}" />
+              </Hyperlink>
+            </TextBlock>
+            <TextBlock
+              Height="auto"
+              Margin="5"
+              VerticalAlignment="Top"
+              TextWrapping="Wrap">
+              <Hyperlink
+                Command="{Binding OpenLinkCommand}"
+                CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
+                <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
+              </Hyperlink>
+            </TextBlock>
+          </VirtualizingStackPanel>
+        </GroupBox>
 
-        <TextBlock
-          Height="auto"
-          Margin="5"
-          VerticalAlignment="Top"
-          Text="{Binding SelectedPluginData.Title}"
-          TextWrapping="Wrap" />
-        <TextBlock
-          Height="auto"
-          Margin="5"
-          VerticalAlignment="Top"
-          TextWrapping="Wrap">
-          <Hyperlink
-            Command="{Binding OpenLinkCommand}"
-            CommandParameter="{Binding SelectedPluginData.Url}">
-            <Run Text="{Binding SelectedPluginData.Url}" />
-          </Hyperlink>
-        </TextBlock>
-        <TextBlock
-          Height="auto"
-          Margin="5"
-          VerticalAlignment="Top"
-          TextWrapping="Wrap">
-          <Hyperlink
-            Command="{Binding OpenLinkCommand}"
-            CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
-            <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
-          </Hyperlink>
-        </TextBlock>
         <Button
           Height="32"
           Margin="5"
