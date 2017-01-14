@@ -112,6 +112,12 @@
                 <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
               </Hyperlink>
             </TextBlock>
+            <Button
+              Height="20"
+              Margin="5"
+              VerticalAlignment="Top"
+              Command="{Binding UninstallCommand}"
+              Content="Uninstall" />
           </VirtualizingStackPanel>
         </GroupBox>
 

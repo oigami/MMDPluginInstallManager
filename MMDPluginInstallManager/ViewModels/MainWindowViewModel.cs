@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Livet;
+using Livet.Behaviors.ControlBinding.OneWay;
 using Livet.Commands;
 using Livet.EventListeners;
 using Microsoft.Win32;
@@ -61,7 +62,31 @@ namespace MMDPluginInstallManager.ViewModels
 
         #region DownLoadPluginList変更通知プロパティ
 
-        public ObservableCollection<Model.DownloadPluginData> DownloadPluginList => _model?.DownloadPluginList;
+        public ObservableCollection<PluginData> DownloadPluginList
+        {
+            get
+            {
+                if (_model == null)
+                {
+                    return null;
+                }
+                var data = new ObservableCollection<PluginData>();
+                foreach (var value in _model.DownloadPluginDic.Values)
+                {
+                    MMDPluginPackage package;
+                    _model.MMDInstalledPluginPackage.TryGetValue(value.Title, out package);
+                    data.Add(new PluginData
+                    {
+                        NewVersion = value.NewVersion,
+                        NowVersion = package?.Version ?? -1,
+                        Title = value.Title,
+                        ReadMeFilePath = value.ReadMeFilePath,
+                        Url = value.Url
+                    });
+                }
+                return data;
+            }
+        }
 
         #endregion DownLoadPluginList変更通知プロパティ
 
@@ -102,7 +127,7 @@ namespace MMDPluginInstallManager.ViewModels
             _model = new Model();
             _listener = new PropertyChangedEventListener(_model)
             {
-                nameof(_model.DownloadPluginList),
+                nameof(_model.DownloadPluginDic),
                 (_, __) => RaisePropertyChanged(nameof(DownloadPluginList))
             };
 
@@ -146,11 +171,50 @@ namespace MMDPluginInstallManager.ViewModels
             _model.LoadPluginData();
         }
 
+        public class PluginData
+        {
+            public float NowVersion { get; set; }
+
+            public float NewVersion { get; set; }
+
+            public string Title { get; set; }
+
+            public string ReadMeFilePath { get; set; }
+
+            public string Url { get; set; }
+        }
+
+        #region UninstallCommand
+
+        private ViewModelCommand _UninstallCommand;
+
+        public ViewModelCommand UninstallCommand
+        {
+            get
+            {
+                if (_UninstallCommand == null)
+                {
+                    _UninstallCommand = new ViewModelCommand(Uninstall, CanUninstall);
+                }
+                return _UninstallCommand;
+            }
+        }
+
+        public bool CanUninstall() => SelectedPluginData != null && SelectedPluginData.NowVersion > 0.0;
+
+        public async void Uninstall()
+        {
+            await _model.UninstallPlugin(_SelectedPluginData.Title);
+            UninstallCommand.RaiseCanExecuteChanged();
+        }
+
+        #endregion
+
         #region SelectedPluginData変更通知プロパティ
 
-        private Model.DownloadPluginData _SelectedPluginData;
+        private PluginData _SelectedPluginData;
 
-        public Model.DownloadPluginData SelectedPluginData
+        public PluginData SelectedPluginData
         {
             get { return _SelectedPluginData; }
 
@@ -162,6 +226,7 @@ namespace MMDPluginInstallManager.ViewModels
                 }
                 _SelectedPluginData = value;
                 RaisePropertyChanged();
+                UninstallCommand.RaiseCanExecuteChanged();
             }
         }
 

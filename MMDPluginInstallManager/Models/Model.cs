@@ -11,6 +11,7 @@ using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Windows.Markup;
 
 namespace MMDPluginInstallManager.Models
@@ -53,7 +54,7 @@ namespace MMDPluginInstallManager.Models
 
         private string _installPath;
 
-        public Dictionary<string, MMDPluginPackage> MMDInstalledPluginPackage { get; set; }
+        public Dictionary<string, MMDPluginPackage> MMDInstalledPluginPackage { get; private set; }
 
         #region IsInstalledMMDPlugin変更通知プロパティ
 
@@ -78,14 +79,25 @@ namespace MMDPluginInstallManager.Models
         public Dictionary<string, DownloadPluginData> DownloadPluginDic { get; } =
             new Dictionary<string, DownloadPluginData>();
 
-        public ObservableCollection<DownloadPluginData> DownloadPluginList
-            => new ObservableCollection<DownloadPluginData>(DownloadPluginDic.Values);
-
         private string GetMMDPluginPackageJsonFilename()
         {
             var path = Path.Combine(_installPath, "plugin/");
             Directory.CreateDirectory(path);
             return Path.Combine(path, MMDPluginPackageJsonFilename);
+        }
+
+        public async Task UninstallPlugin(string mmdPluginName)
+        {
+            await Task.Run(() =>
+            {
+                var item = MMDInstalledPluginPackage[mmdPluginName];
+                foreach (var i in item.InstalledDLL)
+                {
+                    File.Delete(i);
+                }
+                MMDInstalledPluginPackage.Remove(mmdPluginName);
+                RaisePropertyChanged(nameof(DownloadPluginDic));
+            });
         }
 
         public async Task<DownloadPluginData> InstallPlugin(string zipPath)
@@ -135,11 +147,10 @@ namespace MMDPluginInstallManager.Models
                         }
                     }
                 }
-                loadItem.NowVersion = loadItem.NewVersion;
                 MMDInstalledPluginPackage[loadItem.Title] = packageData;
                 File.WriteAllText(GetMMDPluginPackageJsonFilename(),
                                   JsonConvert.SerializeObject(MMDInstalledPluginPackage));
-                RaisePropertyChanged(nameof(DownloadPluginList));
+                RaisePropertyChanged(nameof(DownloadPluginDic));
                 return loadItem;
             });
         }
@@ -192,7 +203,6 @@ namespace MMDPluginInstallManager.Models
                 {
                     Url = item.URL,
                     NewVersion = item.Version,
-                    NowVersion = package?.Version ?? -1,
                     Title = item.Title,
                     ReadMeFilePath = package?.ReadMeFilePath
                 });
@@ -201,7 +211,7 @@ namespace MMDPluginInstallManager.Models
                     mmdPluginVersion = item.Version;
                 }
             }
-            RaisePropertyChanged(nameof(DownloadPluginList));
+            RaisePropertyChanged(nameof(DownloadPluginDic));
 
 
             MMDPluginPackage mmdPluginPackage;
@@ -237,8 +247,6 @@ namespace MMDPluginInstallManager.Models
             }
 
             public float NewVersion { get; set; }
-
-            public float NowVersion { get; set; }
 
             public string Title { get; set; }
 
