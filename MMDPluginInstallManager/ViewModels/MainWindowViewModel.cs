@@ -277,5 +277,16 @@ namespace MMDPluginInstallManager.ViewModels
         }
 
         #endregion
+
+        #region CopyLinkCommand
+
+        private ListenerCommand<string> _CopyLinkCommand;
+
+        public ListenerCommand<string> CopyLinkCommand
+            => _CopyLinkCommand ?? (_CopyLinkCommand = new ListenerCommand<string>(CopyLink));
+
+        private static void CopyLink(string parameter) => Clipboard.SetText(parameter);
+
+        #endregion
     }
 }

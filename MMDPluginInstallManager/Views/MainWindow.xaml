@@ -98,6 +98,18 @@
                 Command="{Binding OpenLinkCommand}"
                 CommandParameter="{Binding SelectedPluginData.Url}">
                 <Run Text="{Binding SelectedPluginData.Url}" />
+                <Hyperlink.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem
+                      Command="{Binding CopyLinkCommand}"
+                      CommandParameter="{Binding SelectedPluginData.Url}"
+                      Header="Copy" />
+                    <MenuItem
+                      Command="{Binding OpenLinkCommand}"
+                      CommandParameter="{Binding SelectedPluginData.Url}"
+                      Header="Open" />
+                  </ContextMenu>
+                </Hyperlink.ContextMenu>
               </Hyperlink>
             </TextBlock>
             <TextBlock
@@ -110,6 +122,18 @@
                 Command="{Binding OpenLinkCommand}"
                 CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
                 <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
+                <Hyperlink.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem
+                      Command="{Binding CopyLinkCommand}"
+                      CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}"
+                      Header="Copy" />
+                    <MenuItem
+                      Command="{Binding OpenLinkCommand}"
+                      CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}"
+                      Header="Open" />
+                  </ContextMenu>
+                </Hyperlink.ContextMenu>
               </Hyperlink>
             </TextBlock>
             <Button
