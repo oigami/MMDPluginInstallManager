@@ -61,10 +61,7 @@ namespace MMDPluginInstallManager.ViewModels
 
         #region DownLoadPluginList変更通知プロパティ
 
-        public Dictionary<string, Model.DownloadPluginData>.ValueCollection DownloadPluginList
-        {
-            get { return _model?.DownloadPluginList; }
-        }
+        public ObservableCollection<Model.DownloadPluginData> DownloadPluginList => _model?.DownloadPluginList;
 
         #endregion DownLoadPluginList変更通知プロパティ
 

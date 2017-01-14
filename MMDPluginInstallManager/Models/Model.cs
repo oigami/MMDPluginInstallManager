@@ -9,6 +9,8 @@ using Livet;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Windows.Markup;
 
 namespace MMDPluginInstallManager.Models
@@ -76,7 +78,9 @@ namespace MMDPluginInstallManager.Models
         public Dictionary<string, DownloadPluginData> DownloadPluginDic { get; } =
             new Dictionary<string, DownloadPluginData>();
 
-        public Dictionary<string, DownloadPluginData>.ValueCollection DownloadPluginList
+        public ObservableCollection<DownloadPluginData> DownloadPluginList
+            => new ObservableCollection<DownloadPluginData>(DownloadPluginDic.Values);
+
         {
             get { return DownloadPluginDic.Values; }
         }
@@ -131,6 +135,7 @@ namespace MMDPluginInstallManager.Models
                 packageData.ReadMeFilePath = loadItem.ReadMeFilePath;
                 MMDInstalledPluginPackage[loadItem.Title] = packageData;
                 File.WriteAllText(MMDPluginPackageJsonFilename, JsonConvert.SerializeObject(MMDInstalledPluginPackage));
+                RaisePropertyChanged(nameof(DownloadPluginList));
                 return loadItem;
             });
         }
@@ -224,7 +229,7 @@ namespace MMDPluginInstallManager.Models
                 {
                     t[0] = t[0].Replace('/', '\\');
                 }
-                _readme = readMe;
+                _readme = readMe.Replace('/', '\\');
             }
 
             public float NewVersion { get; set; }
