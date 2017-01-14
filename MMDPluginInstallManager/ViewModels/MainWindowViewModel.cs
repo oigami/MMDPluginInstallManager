@@ -62,29 +62,15 @@ namespace MMDPluginInstallManager.ViewModels
 
         #region DownLoadPluginList変更通知プロパティ
 
+        private ObservableCollection<PluginData> _DownloadPluginList = new ObservableCollection<PluginData>();
+
         public ObservableCollection<PluginData> DownloadPluginList
         {
-            get
+            get { return _DownloadPluginList; }
+            set
             {
-                if (_model == null)
-                {
-                    return null;
-                }
-                var data = new ObservableCollection<PluginData>();
-                foreach (var value in _model.DownloadPluginDic.Values)
-                {
-                    MMDPluginPackage package;
-                    _model.MMDInstalledPluginPackage.TryGetValue(value.Title, out package);
-                    data.Add(new PluginData
-                    {
-                        NewVersion = value.NewVersion,
-                        NowVersion = package?.Version ?? -1,
-                        Title = value.Title,
-                        ReadMeFilePath = value.ReadMeFilePath,
-                        Url = value.Url
-                    });
-                }
-                return data;
+                _DownloadPluginList = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -128,7 +114,25 @@ namespace MMDPluginInstallManager.ViewModels
             _listener = new PropertyChangedEventListener(_model)
             {
                 nameof(_model.DownloadPluginDic),
-                (_, __) => RaisePropertyChanged(nameof(DownloadPluginList))
+                (_, __) =>
+                    DispatcherHelper.UIDispatcher.Invoke(() =>
+                    {
+                        _DownloadPluginList.Clear();
+                        foreach (var v in _model.DownloadPluginDic.Values)
+                        {
+                            MMDPluginPackage package;
+                            _model.MMDInstalledPluginPackage.TryGetValue(v.Title, out package);
+                            _DownloadPluginList.Add(new PluginData
+                            {
+                                NewVersion = v.NewVersion,
+                                NowVersion = package?.Version ?? -1,
+                                Title = v.Title,
+                                ReadMeFilePath = v.ReadMeFilePath,
+                                Url = v.Url
+                            });
+                        }
+                        RaisePropertyChanged(nameof(DownloadPluginList));
+                    })
             };
 
             try
@@ -286,6 +290,19 @@ namespace MMDPluginInstallManager.ViewModels
             => _CopyLinkCommand ?? (_CopyLinkCommand = new ListenerCommand<string>(CopyLink));
 
         private static void CopyLink(string parameter) => Clipboard.SetText(parameter);
+
+        #endregion
+
+        #region SetMMDPluginListViewCommand
+
+        private ViewModelCommand _SetMMDPluginListViewCommand;
+
+        public ViewModelCommand SetMMDPluginListViewCommand => _SetMMDPluginListViewCommand
+                                                               ?? (_SetMMDPluginListViewCommand =
+                                                                   new ViewModelCommand(SetMMDPluginListView));
+
+        private void SetMMDPluginListView() =>
+            SelectedPluginData = DownloadPluginList.First(s => s.Title == "MMDPlugin");
 
         #endregion
     }

@@ -55,7 +55,8 @@
         Margin="10,10,1,10"
         HorizontalContentAlignment="Stretch"
         ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
-        SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
+        SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}"
+        IsSynchronizedWithCurrentItem="True">
         <ListView.View>
           <GridView>
             <GridViewColumn
@@ -162,6 +163,13 @@
           1. Please donwload the zip file from the above link.
           <LineBreak />
           2. 'Select zip' or drag &amp; drop the zip file here.
+          <LineBreak />
+          <LineBreak />
+          Note:
+          <Hyperlink Command="{Binding SetMMDPluginListViewCommand}">
+            <Run Text="MMDPlugin" />
+          </Hyperlink>
+          is required for the other plugin .
         </TextBlock>
       </VirtualizingStackPanel>
 
