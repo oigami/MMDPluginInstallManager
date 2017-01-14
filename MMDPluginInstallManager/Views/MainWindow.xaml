@@ -10,8 +10,8 @@
   xmlns:v="clr-namespace:MMDPluginInstallManager.Views"
   xmlns:vm="clr-namespace:MMDPluginInstallManager.ViewModels"
   Title="MainWindow"
-  Width="525"
-  Height="350"
+  Width="615"
+  Height="410"
   AllowDrop="True"
   Drop="Window_Drop"
   PreviewDragOver="Window_PreviewDragOver"
@@ -84,13 +84,16 @@
               Height="auto"
               Margin="5"
               VerticalAlignment="Top"
-              Text="{Binding SelectedPluginData.Title}"
-              TextWrapping="Wrap" />
+              TextWrapping="Wrap">
+              <Run Text="title: " />
+              <Run Text="{Binding SelectedPluginData.Title}" />
+            </TextBlock>
             <TextBlock
               Height="auto"
               Margin="5"
               VerticalAlignment="Top"
               TextWrapping="Wrap">
+              <Run Text="link: " />
               <Hyperlink
                 Command="{Binding OpenLinkCommand}"
                 CommandParameter="{Binding SelectedPluginData.Url}">
@@ -102,6 +105,7 @@
               Margin="5"
               VerticalAlignment="Top"
               TextWrapping="Wrap">
+              <Run Text="readme: " />
               <Hyperlink
                 Command="{Binding OpenLinkCommand}"
                 CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
