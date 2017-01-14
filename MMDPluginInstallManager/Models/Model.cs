@@ -81,8 +81,11 @@ namespace MMDPluginInstallManager.Models
         public ObservableCollection<DownloadPluginData> DownloadPluginList
             => new ObservableCollection<DownloadPluginData>(DownloadPluginDic.Values);
 
+        private string GetMMDPluginPackageJsonFilename()
         {
-            get { return DownloadPluginDic.Values; }
+            var path = Path.Combine(_installPath, "plugin/");
+            Directory.CreateDirectory(path);
+            return Path.Combine(path, MMDPluginPackageJsonFilename);
         }
 
         public async Task<DownloadPluginData> InstallPlugin(string zipPath)
@@ -128,13 +131,14 @@ namespace MMDPluginInstallManager.Models
                         if (loadItem.IsReadMeFile(filename))
                         {
                             loadItem.ReadMeFilePath = path;
+                            packageData.ReadMeFilePath = path;
                         }
                     }
                 }
                 loadItem.NowVersion = loadItem.NewVersion;
-                packageData.ReadMeFilePath = loadItem.ReadMeFilePath;
                 MMDInstalledPluginPackage[loadItem.Title] = packageData;
-                File.WriteAllText(MMDPluginPackageJsonFilename, JsonConvert.SerializeObject(MMDInstalledPluginPackage));
+                File.WriteAllText(GetMMDPluginPackageJsonFilename(),
+                                  JsonConvert.SerializeObject(MMDInstalledPluginPackage));
                 RaisePropertyChanged(nameof(DownloadPluginList));
                 return loadItem;
             });
@@ -164,7 +168,7 @@ namespace MMDPluginInstallManager.Models
             var text = File.ReadAllText("package_list.json");
             try
             {
-                var mmdpluginPackageJsonText = File.ReadAllText(MMDPluginPackageJsonFilename);
+                var mmdpluginPackageJsonText = File.ReadAllText(GetMMDPluginPackageJsonFilename());
                 MMDInstalledPluginPackage =
                     JsonConvert.DeserializeObject<Dictionary<string, MMDPluginPackage>>(mmdpluginPackageJsonText);
             }
