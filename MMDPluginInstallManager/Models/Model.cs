@@ -102,6 +102,10 @@ namespace MMDPluginInstallManager.Models
                     foreach (var entry in zipArchive.Entries)
                     {
                         var filename = entry.FullName.Replace('/', '\\');
+                        if (string.IsNullOrEmpty(filename) || filename[filename.Length - 1] == '\\')
+                        {
+                            continue;
+                        }
                         string path;
                         if (!loadItem.TryGetInstallDir(filename, out path))
                         {
@@ -243,7 +247,7 @@ namespace MMDPluginInstallManager.Models
                 {
                     if (filename.StartsWith(item[0], StringComparison.OrdinalIgnoreCase))
                     {
-                        path = item[1];
+                        path = Path.Combine(Path.GetDirectoryName(filename), item[1]);
                         return true;
                     }
                 }
