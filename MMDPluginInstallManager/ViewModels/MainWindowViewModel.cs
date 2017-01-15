@@ -124,7 +124,7 @@ namespace MMDPluginInstallManager.ViewModels
                             _model.MMDInstalledPluginPackage.TryGetValue(v.Title, out package);
                             _DownloadPluginList.Add(new PluginData
                             {
-                                NewVersion = v.NewVersion,
+                                LatestVersion = v.LatestVersion,
                                 NowVersion = package?.Version ?? -1,
                                 Title = v.Title,
                                 ReadMeFilePath = v.ReadMeFilePath,
@@ -179,7 +179,7 @@ namespace MMDPluginInstallManager.ViewModels
         {
             public float NowVersion { get; set; }
 
-            public float NewVersion { get; set; }
+            public float LatestVersion { get; set; }
 
             public string Title { get; set; }
 

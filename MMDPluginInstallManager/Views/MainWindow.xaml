@@ -54,17 +54,17 @@
       <ListView
         Margin="10,10,1,10"
         HorizontalContentAlignment="Stretch"
+        IsSynchronizedWithCurrentItem="True"
         ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
-        SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}"
-        IsSynchronizedWithCurrentItem="True">
+        SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
         <ListView.View>
           <GridView>
             <GridViewColumn
               DisplayMemberBinding="{Binding Title}"
               Header="Title" />
             <GridViewColumn
-              DisplayMemberBinding="{Binding NewVersion}"
-              Header="New Version" />
+              DisplayMemberBinding="{Binding LatestVersion}"
+              Header="Latest Version" />
             <GridViewColumn
               DisplayMemberBinding="{Binding NowVersion}"
               Header="Now Version" />

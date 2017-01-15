@@ -115,7 +115,7 @@ namespace MMDPluginInstallManager.Models
                 RaisePropertyChanged();
                 var packageData = new MMDPluginPackage
                 {
-                    Version = loadItem.NewVersion
+                    Version = loadItem.LatestVersion
                 };
                 using (var zipArchive = ZipFile.OpenRead(zipPath))
                 {
@@ -221,7 +221,7 @@ namespace MMDPluginInstallManager.Models
                 DownloadPluginDic.Add(item.SHA1Hash, new DownloadPluginData(item.InstallDir, item.Readme)
                 {
                     Url = item.URL,
-                    NewVersion = item.Version,
+                    LatestVersion = item.Version,
                     Title = item.Title,
                     ReadMeFilePath = package?.ReadMeFilePath
                 });
@@ -265,7 +265,7 @@ namespace MMDPluginInstallManager.Models
                 _readme = readMe.Replace('/', '\\');
             }
 
-            public float NewVersion { get; set; }
+            public float LatestVersion { get; set; }
 
             public string Title { get; set; }
 
