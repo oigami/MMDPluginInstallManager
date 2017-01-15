@@ -11,6 +11,7 @@ using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Markup;
 
@@ -174,9 +175,27 @@ namespace MMDPluginInstallManager.Models
             _installPath = Directory.GetParent(installPath).FullName;
         }
 
-        public void LoadPluginData()
+        private async Task<MMDPluginData[]> GetPackageList()
         {
+            try
+            {
+                using (var wc = new WebClient())
+                {
+                    await wc.DownloadFileTaskAsync(
+                                                   "https://raw.githubusercontent.com/oigami/MMDPluginInstallManager/master/MMDPluginInstallManager/package_list.json",
+                                                   @"package_list.json");
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
             var text = File.ReadAllText("package_list.json");
+            return JsonConvert.DeserializeObject<MMDPluginData[]>(text);
+        }
+
+        public async Task LoadPluginData()
+        {
             try
             {
                 var mmdpluginPackageJsonText = File.ReadAllText(GetMMDPluginPackageJsonFilename());
@@ -189,7 +208,7 @@ namespace MMDPluginInstallManager.Models
             }
 
             double mmdPluginVersion = -1;
-            var jsonData = JsonConvert.DeserializeObject<MMDPluginData[]>(text);
+            var jsonData = await GetPackageList();
             foreach (var item in jsonData)
             {
                 MMDPluginPackage package = null;

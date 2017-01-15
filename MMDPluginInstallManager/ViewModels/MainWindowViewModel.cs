@@ -108,7 +108,7 @@ namespace MMDPluginInstallManager.ViewModels
             window?.Close();
         }
 
-        public void Initialize()
+        public async void Initialize()
         {
             _model = new Model();
             _listener = new PropertyChangedEventListener(_model)
@@ -172,7 +172,7 @@ namespace MMDPluginInstallManager.ViewModels
                     ExitWindow();
                 }
             }
-            _model.LoadPluginData();
+            await _model.LoadPluginData();
         }
 
         public class PluginData
