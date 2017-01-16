@@ -101,7 +101,7 @@ namespace MMDPluginInstallManager.Models
             });
         }
 
-        public async Task<DownloadPluginData> InstallPlugin(string zipPath)
+        public async Task<MMDPluginPackage> InstallPlugin(string zipPath)
         {
             return await Task.Run(() =>
             {
@@ -112,7 +112,7 @@ namespace MMDPluginInstallManager.Models
                 {
                     throw new ArgumentException("A hash matching the SHA1 of the zip file was not found.\n");
                 }
-                RaisePropertyChanged();
+
                 var packageData = new MMDPluginPackage
                 {
                     Version = loadItem.LatestVersion
@@ -143,7 +143,6 @@ namespace MMDPluginInstallManager.Models
 
                         if (loadItem.IsReadMeFile(filename))
                         {
-                            loadItem.ReadMeFilePath = path;
                             packageData.ReadMeFilePath = path;
                         }
                     }
@@ -152,7 +151,7 @@ namespace MMDPluginInstallManager.Models
                 File.WriteAllText(GetMMDPluginPackageJsonFilename(),
                                   JsonConvert.SerializeObject(MMDInstalledPluginPackage));
                 RaisePropertyChanged(nameof(DownloadPluginDic));
-                return loadItem;
+                return packageData;
             });
         }
 
@@ -166,8 +165,7 @@ namespace MMDPluginInstallManager.Models
             {
                 throw new FileNotFoundException("The MikuMikuDance.exe is not found.");
             }
-            var hash = CreateSHA1Hash(installPath);
-            if (hash != "7dbf4f27d6dd14ce77e2e659a69886e3b6739b56")
+            if (CreateSHA1Hash(installPath) != "7dbf4f27d6dd14ce77e2e659a69886e3b6739b56")
             {
                 throw new InvalidOperationException(
                     "The MikuMikuDance.exe is wrong.\nThis program is only supported for 'MMD ver9.26 x64'.");
@@ -207,7 +205,7 @@ namespace MMDPluginInstallManager.Models
                 MMDInstalledPluginPackage = new Dictionary<string, MMDPluginPackage>();
             }
 
-            double mmdPluginVersion = -1;
+            float mmdPluginVersion = -1;
             var jsonData = await GetPackageList();
             foreach (var item in jsonData)
             {
@@ -223,7 +221,6 @@ namespace MMDPluginInstallManager.Models
                     Url = item.URL,
                     LatestVersion = item.Version,
                     Title = item.Title,
-                    ReadMeFilePath = package?.ReadMeFilePath
                 });
                 if (item.Title == "MMDPlugin")
                 {
@@ -236,7 +233,7 @@ namespace MMDPluginInstallManager.Models
             MMDPluginPackage mmdPluginPackage;
             if (MMDInstalledPluginPackage.TryGetValue("MMDPlugin", out mmdPluginPackage))
             {
-                if (Math.Abs(mmdPluginPackage.Version - mmdPluginVersion) < 1e-5)
+                if (Math.Abs(mmdPluginPackage.Version - mmdPluginVersion) < 1e-5f)
                 {
                     IsInstalledMMDPlugin = true;
                 }
@@ -255,6 +252,16 @@ namespace MMDPluginInstallManager.Models
 
         public class DownloadPluginData
         {
+            public float LatestVersion { get; set; }
+
+            public string Title { get; set; }
+
+            public string Url { get; set; }
+
+            private readonly string[][] _installDir;
+
+            private readonly string _readme;
+
             public DownloadPluginData(string[][] installDir, string readMe)
             {
                 _installDir = installDir;
@@ -264,18 +271,6 @@ namespace MMDPluginInstallManager.Models
                 }
                 _readme = readMe.Replace('/', '\\');
             }
-
-            public float LatestVersion { get; set; }
-
-            public string Title { get; set; }
-
-            public string Url { get; set; }
-
-            public string ReadMeFilePath { get; set; }
-
-            private readonly string[][] _installDir;
-
-            private readonly string _readme;
 
             public bool TryGetInstallDir(string filename, out string path)
             {

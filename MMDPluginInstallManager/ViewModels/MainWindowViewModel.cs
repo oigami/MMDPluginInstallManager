@@ -127,7 +127,7 @@ namespace MMDPluginInstallManager.ViewModels
                                 LatestVersion = v.LatestVersion,
                                 NowVersion = package?.Version ?? -1,
                                 Title = v.Title,
-                                ReadMeFilePath = v.ReadMeFilePath,
+                                ReadMeFilePath = package?.ReadMeFilePath,
                                 Url = v.Url
                             });
                         }
