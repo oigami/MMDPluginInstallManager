@@ -9,6 +9,7 @@ using Livet;
 using Livet.Behaviors.ControlBinding.OneWay;
 using Livet.Commands;
 using Livet.EventListeners;
+using Livet.Messaging;
 using Microsoft.Win32;
 using MMDPluginInstallManager.Models;
 
@@ -298,6 +299,30 @@ namespace MMDPluginInstallManager.ViewModels
 
         private void SetMMDPluginListView() =>
             SelectedPluginData = DownloadPluginList.First(s => s.Title == "MMDPlugin");
+
+        #endregion
+
+        #region OpenLicenseWindowCommand
+
+        private ViewModelCommand _OpenLicenseWindowCommand;
+
+        public ViewModelCommand OpenLicenseWindowCommand
+        {
+            get
+            {
+                if (_OpenLicenseWindowCommand == null)
+                {
+                    _OpenLicenseWindowCommand = new ViewModelCommand(OpenLicenseWindow);
+                }
+                return _OpenLicenseWindowCommand;
+            }
+        }
+
+        public void OpenLicenseWindow()
+        {
+            var vm = new LicenseWindowViewModel();
+            Messenger.Raise(new TransitionMessage(vm, "OpenLicenseCommand"));
+        }
 
         #endregion
     }

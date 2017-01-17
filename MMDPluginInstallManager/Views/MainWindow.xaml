@@ -40,139 +40,153 @@
     </i:EventTrigger>
 
     <!--  WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください  -->
-
+    <l:InteractionMessageTrigger
+      MessageKey="OpenLicenseCommand"
+      Messenger="{Binding Messenger}">
+      <l:TransitionInteractionMessageAction
+        Mode="Modal"
+        WindowType="{x:Type v:LicenseWindow}" />
+    </l:InteractionMessageTrigger>
   </i:Interaction.Triggers>
+  <VirtualizingStackPanel>
+    <Menu>
+      <MenuItem Header="Help(_F)">
+        <MenuItem
+          Command="{Binding OpenLicenseWindowCommand}"
+          Header="License" />
+      </MenuItem>
+    </Menu>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="300*" />
+        <ColumnDefinition Width="5*" />
+        <ColumnDefinition Width="210*" />
+      </Grid.ColumnDefinitions>
+      <Grid Column="0">
 
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="300*" />
-      <ColumnDefinition Width="5*" />
-      <ColumnDefinition Width="210*" />
-    </Grid.ColumnDefinitions>
-    <Grid Column="0">
+        <ListView
+          Margin="10,10,1,10"
+          HorizontalContentAlignment="Stretch"
+          IsSynchronizedWithCurrentItem="True"
+          ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
+          SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
+          <ListView.View>
+            <GridView>
+              <GridViewColumn
+                DisplayMemberBinding="{Binding Title}"
+                Header="Title" />
+              <GridViewColumn
+                DisplayMemberBinding="{Binding LatestVersion}"
+                Header="Latest Version" />
+              <GridViewColumn
+                DisplayMemberBinding="{Binding NowVersion}"
+                Header="Now Version" />
+            </GridView>
+          </ListView.View>
+        </ListView>
+      </Grid>
+      <GridSplitter
+        Grid.Column="1"
+        Width="5"
+        HorizontalAlignment="Center"
+        Background="Transparent" />
+      <Grid Column="2">
+        <VirtualizingStackPanel Orientation="Vertical">
+          <GroupBox Header="Infomation">
+            <VirtualizingStackPanel Orientation="Vertical">
+              <TextBlock
+                Height="auto"
+                Margin="5"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap">
+                <Run Text="title: " />
+                <Run Text="{Binding SelectedPluginData.Title}" />
+              </TextBlock>
+              <TextBlock
+                Height="auto"
+                Margin="5"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap">
+                <Run Text="link: " />
+                <Hyperlink
+                  Command="{Binding OpenLinkCommand}"
+                  CommandParameter="{Binding SelectedPluginData.Url}">
+                  <Run Text="{Binding SelectedPluginData.Url}" />
+                  <Hyperlink.ContextMenu>
+                    <ContextMenu>
+                      <MenuItem
+                        Command="{Binding CopyLinkCommand}"
+                        CommandParameter="{Binding SelectedPluginData.Url}"
+                        Header="Copy" />
+                      <MenuItem
+                        Command="{Binding OpenLinkCommand}"
+                        CommandParameter="{Binding SelectedPluginData.Url}"
+                        Header="Open" />
+                    </ContextMenu>
+                  </Hyperlink.ContextMenu>
+                </Hyperlink>
+              </TextBlock>
+              <TextBlock
+                Height="auto"
+                Margin="5"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap">
+                <Run Text="readme: " />
+                <Hyperlink
+                  Command="{Binding OpenLinkCommand}"
+                  CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
+                  <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
+                  <Hyperlink.ContextMenu>
+                    <ContextMenu>
+                      <MenuItem
+                        Command="{Binding CopyLinkCommand}"
+                        CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}"
+                        Header="Copy" />
+                      <MenuItem
+                        Command="{Binding OpenLinkCommand}"
+                        CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}"
+                        Header="Open" />
+                    </ContextMenu>
+                  </Hyperlink.ContextMenu>
+                </Hyperlink>
+              </TextBlock>
+              <Button
+                Height="20"
+                Margin="5"
+                VerticalAlignment="Top"
+                Command="{Binding UninstallCommand}"
+                Content="Uninstall" />
+            </VirtualizingStackPanel>
+          </GroupBox>
 
-      <ListView
-        Margin="10,10,1,10"
-        HorizontalContentAlignment="Stretch"
-        IsSynchronizedWithCurrentItem="True"
-        ItemsSource="{Binding DownloadPluginList, Mode=OneWay}"
-        SelectedItem="{Binding SelectedPluginData, Mode=TwoWay}">
-        <ListView.View>
-          <GridView>
-            <GridViewColumn
-              DisplayMemberBinding="{Binding Title}"
-              Header="Title" />
-            <GridViewColumn
-              DisplayMemberBinding="{Binding LatestVersion}"
-              Header="Latest Version" />
-            <GridViewColumn
-              DisplayMemberBinding="{Binding NowVersion}"
-              Header="Now Version" />
-          </GridView>
-        </ListView.View>
-      </ListView>
+          <Button
+            Height="32"
+            Margin="5"
+            VerticalAlignment="Top"
+            Command="{Binding InstallZipCommand}"
+            Content="Select zip" />
+          <TextBlock
+            Height="170"
+            Margin="5"
+            VerticalAlignment="Top"
+            TextWrapping="Wrap">
+            How to install.
+            <LineBreak />
+            <LineBreak />
+            1. Please donwload the zip file from the above link.
+            <LineBreak />
+            2. 'Select zip' or drag &amp; drop the zip file here.
+            <LineBreak />
+            <LineBreak />
+            Note:
+            <Hyperlink Command="{Binding SetMMDPluginListViewCommand}">
+              <Run Text="MMDPlugin" />
+            </Hyperlink>
+            is required for the other plugin .
+          </TextBlock>
+        </VirtualizingStackPanel>
+
+      </Grid>
     </Grid>
-    <GridSplitter
-      Grid.Column="1"
-      Width="5"
-      HorizontalAlignment="Center"
-      Background="Transparent" />
-    <Grid Column="2">
-      <VirtualizingStackPanel Orientation="Vertical">
-        <GroupBox Header="Infomation">
-          <VirtualizingStackPanel Orientation="Vertical">
-            <TextBlock
-              Height="auto"
-              Margin="5"
-              VerticalAlignment="Top"
-              TextWrapping="Wrap">
-              <Run Text="title: " />
-              <Run Text="{Binding SelectedPluginData.Title}" />
-            </TextBlock>
-            <TextBlock
-              Height="auto"
-              Margin="5"
-              VerticalAlignment="Top"
-              TextWrapping="Wrap">
-              <Run Text="link: " />
-              <Hyperlink
-                Command="{Binding OpenLinkCommand}"
-                CommandParameter="{Binding SelectedPluginData.Url}">
-                <Run Text="{Binding SelectedPluginData.Url}" />
-                <Hyperlink.ContextMenu>
-                  <ContextMenu>
-                    <MenuItem
-                      Command="{Binding CopyLinkCommand}"
-                      CommandParameter="{Binding SelectedPluginData.Url}"
-                      Header="Copy" />
-                    <MenuItem
-                      Command="{Binding OpenLinkCommand}"
-                      CommandParameter="{Binding SelectedPluginData.Url}"
-                      Header="Open" />
-                  </ContextMenu>
-                </Hyperlink.ContextMenu>
-              </Hyperlink>
-            </TextBlock>
-            <TextBlock
-              Height="auto"
-              Margin="5"
-              VerticalAlignment="Top"
-              TextWrapping="Wrap">
-              <Run Text="readme: " />
-              <Hyperlink
-                Command="{Binding OpenLinkCommand}"
-                CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}">
-                <Run Text="{Binding SelectedPluginData.ReadMeFilePath}" />
-                <Hyperlink.ContextMenu>
-                  <ContextMenu>
-                    <MenuItem
-                      Command="{Binding CopyLinkCommand}"
-                      CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}"
-                      Header="Copy" />
-                    <MenuItem
-                      Command="{Binding OpenLinkCommand}"
-                      CommandParameter="{Binding SelectedPluginData.ReadMeFilePath}"
-                      Header="Open" />
-                  </ContextMenu>
-                </Hyperlink.ContextMenu>
-              </Hyperlink>
-            </TextBlock>
-            <Button
-              Height="20"
-              Margin="5"
-              VerticalAlignment="Top"
-              Command="{Binding UninstallCommand}"
-              Content="Uninstall" />
-          </VirtualizingStackPanel>
-        </GroupBox>
-
-        <Button
-          Height="32"
-          Margin="5"
-          VerticalAlignment="Top"
-          Command="{Binding InstallZipCommand}"
-          Content="Select zip" />
-        <TextBlock
-          Height="170"
-          Margin="5"
-          VerticalAlignment="Top"
-          TextWrapping="Wrap">
-          How to install.
-          <LineBreak />
-          <LineBreak />
-          1. Please donwload the zip file from the above link.
-          <LineBreak />
-          2. 'Select zip' or drag &amp; drop the zip file here.
-          <LineBreak />
-          <LineBreak />
-          Note:
-          <Hyperlink Command="{Binding SetMMDPluginListViewCommand}">
-            <Run Text="MMDPlugin" />
-          </Hyperlink>
-          is required for the other plugin .
-        </TextBlock>
-      </VirtualizingStackPanel>
-
-    </Grid>
-  </Grid>
+  </VirtualizingStackPanel>
 </Window>

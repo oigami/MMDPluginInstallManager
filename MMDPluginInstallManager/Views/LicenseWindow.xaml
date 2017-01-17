@@ -1,0 +1,70 @@
+﻿<Window
+  x:Class="MMDPluginInstallManager.Views.LicenseWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+  xmlns:v="clr-namespace:MMDPluginInstallManager.Views"
+  xmlns:vm="clr-namespace:MMDPluginInstallManager.ViewModels"
+  Title="LicenseWindow"
+  Width="525"
+  Height="350">
+  <!--<Window.DataContext>
+    <vm:LicenseWindowViewModel />
+  </Window.DataContext>-->
+
+  <i:Interaction.Triggers>
+    <!--  Viewに特別な要件が存在しない限りは、トリガーやアクションの自作にこだわらず積極的にコードビハインドを使いましょう  -->
+    <!--  Viewのコードビハインドは、基本的にView内で完結するロジックとViewModelからのイベントの受信(専用リスナを使用する)に限るとトラブルが少なくなります  -->
+    <!--  Livet1.1からはコードビハインドでViewModelのイベントを受信するためのWeakEventLisnterサポートが追加されています  -->
+
+    <!--  WindowのContentRenderedイベントのタイミングでViewModelのInitializeメソッドが呼ばれます  -->
+    <i:EventTrigger EventName="ContentRendered">
+      <l:LivetCallMethodAction
+        MethodName="Initialize"
+        MethodTarget="{Binding}" />
+    </i:EventTrigger>
+
+    <!--  Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます  -->
+    <i:EventTrigger EventName="Closed">
+      <l:DataContextDisposeAction />
+    </i:EventTrigger>
+
+    <!--  WindowのCloseキャンセル処理に対応する場合は、WindowCloseCancelBehaviorの使用を検討してください  -->
+
+  </i:Interaction.Triggers>
+
+  <Grid>
+    <ListView
+      Width="177"
+      Height="319"
+      HorizontalAlignment="Left"
+      VerticalAlignment="Top"
+      HorizontalContentAlignment="Stretch"
+      ItemsSource="{Binding LicenseDatas}"
+      SelectedItem="{Binding SelectedLicense}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn
+            DisplayMemberBinding="{Binding Name}"
+            Header="Name" />
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <TextBlock
+      Height="33"
+      Margin="182,10,10,0"
+      VerticalAlignment="Top"
+      FontSize="25"
+      Text="{Binding SelectedLicense.Name}"
+      TextWrapping="Wrap" />
+    <ScrollViewer
+      Margin="182,44,0,0"
+      HorizontalScrollBarVisibility="Auto">
+      <TextBlock
+        Text="{Binding SelectedLicense.Text}"
+        TextWrapping="Wrap" />
+    </ScrollViewer>
+  </Grid>
+</Window>
