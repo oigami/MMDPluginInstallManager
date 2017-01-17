@@ -10,6 +10,7 @@ using Livet.Behaviors.ControlBinding.OneWay;
 using Livet.Commands;
 using Livet.EventListeners;
 using Livet.Messaging;
+using Livet.Messaging.Windows;
 using Microsoft.Win32;
 using MMDPluginInstallManager.Models;
 
@@ -105,10 +106,9 @@ namespace MMDPluginInstallManager.ViewModels
 
         #endregion InstallCommand
 
-        private static void ExitWindow()
+        private void ExitWindow()
         {
-            var window = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
-            window?.Close();
+            Messenger.Raise(new WindowActionMessage(WindowAction.Close, "Close"));
         }
 
         public async void Initialize()

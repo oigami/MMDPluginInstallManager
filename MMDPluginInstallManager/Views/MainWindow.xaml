@@ -47,6 +47,9 @@
         Mode="Modal"
         WindowType="{x:Type v:LicenseWindow}" />
     </l:InteractionMessageTrigger>
+    <l:InteractionMessageTrigger MessageKey="Close" Messenger="{Binding Messenger}">
+      <l:WindowInteractionMessageAction InvokeActionOnlyWhenWindowIsActive="False" />
+    </l:InteractionMessageTrigger>
   </i:Interaction.Triggers>
   <VirtualizingStackPanel>
     <Menu>
