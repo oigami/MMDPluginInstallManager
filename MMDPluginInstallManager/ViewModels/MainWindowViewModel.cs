@@ -137,42 +137,35 @@ namespace MMDPluginInstallManager.ViewModels
                     })
             };
 
+            // mmdを選択してもらう
+            MessageBox.Show("Choose MikuMikuDance.exe (ver9.26 x64).");
+            var ofd = new OpenFileDialog
+            {
+                FileName = "MikuMikuDance.exe",
+                Filter = "exe file(*.exe)|*.exe|all file(*.*)|*.*",
+                FilterIndex = 1,
+                Title = "Choose MikuMikuDance.exe (ver9.26 x64)"
+            };
+
+
+            if (ofd.ShowDialog() == false)
+            {
+                // キャンセルした場合は終了する
+                MessageBox.Show("Canceled, so this program will end.");
+                ExitWindow();
+                return;
+            }
+
             try
             {
-                // 今いるディレクトリにmmdがあるかチェック
-                _model.SetMMDDirectory("");
+                _model.SetMMDDirectory(ofd.FileName);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // mmdがなかった場合は選択してもらう
-                MessageBox.Show("Choose MikuMikuDance.exe (ver9.26 x64).");
-                var ofd = new OpenFileDialog
-                {
-                    FileName = "MikuMikuDance.exe",
-                    Filter = "exe file(*.exe)|*.exe|all file(*.*)|*.*",
-                    FilterIndex = 1,
-                    Title = "Choose MikuMikuDance.exe (ver9.26 x64)"
-                };
-
-
-                if (ofd.ShowDialog() == false)
-                {
-                    // キャンセルした場合は終了する
-                    MessageBox.Show("Canceled, so this program will end.");
-                    ExitWindow();
-                    return;
-                }
-
-                try
-                {
-                    _model.SetMMDDirectory(ofd.FileName);
-                }
-                catch (Exception e)
-                {
-                    // 選択したものが間違っていた場合は終了する
-                    MessageBox.Show(e.Message + "\nThis program will end.");
-                    ExitWindow();
-                }
+                // 選択したものが間違っていた場合は終了する
+                MessageBox.Show(e.Message + "\nThis program will end.");
+                ExitWindow();
+                return;
             }
             await _model.LoadPluginData();
         }
