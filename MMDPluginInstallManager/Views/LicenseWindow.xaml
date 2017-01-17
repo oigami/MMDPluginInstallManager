@@ -38,9 +38,7 @@
   <Grid>
     <ListView
       Width="177"
-      Height="319"
       HorizontalAlignment="Left"
-      VerticalAlignment="Top"
       HorizontalContentAlignment="Stretch"
       ItemsSource="{Binding LicenseDatas}"
       SelectedItem="{Binding SelectedLicense}">
@@ -60,11 +58,12 @@
       Text="{Binding SelectedLicense.Name}"
       TextWrapping="Wrap" />
     <ScrollViewer
-      Margin="182,44,0,0"
-      HorizontalScrollBarVisibility="Auto">
+      Margin="182,55,0,0"
+      HorizontalScrollBarVisibility="Disabled"
+      VerticalScrollBarVisibility="Auto">
       <TextBlock
         Text="{Binding SelectedLicense.Text}"
-        TextWrapping="Wrap" />
+        TextWrapping="Wrap"  />
     </ScrollViewer>
   </Grid>
 </Window>
