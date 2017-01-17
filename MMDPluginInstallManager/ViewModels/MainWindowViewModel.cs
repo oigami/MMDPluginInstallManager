@@ -83,14 +83,16 @@ namespace MMDPluginInstallManager.ViewModels
             try
             {
                 var installedItem = await _model.InstallPlugin(zipPath);
-                MessageBox.Show("Install succeeded.\nfilename=" + zipPath);
+                MessageBox.Show("Install succeeded.\nfilename=" + zipPath
+                                + "\n\nThe readme file is opened automatically.");
                 try
                 {
                     Process.Start(installedItem.ReadMeFilePath);
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("readme file was not found.\n" + installedItem.ReadMeFilePath + "\n\n"
+                    MessageBox.Show("Failed to open the readme file.\n" + e.Message + "\n"
+                                    + installedItem.ReadMeFilePath + "\n\n"
                                     + e.StackTrace);
                 }
             }
