@@ -14,9 +14,9 @@
   {
     "Title": "MMDUtility",
     "URL": "https://bowlroll.net/file/121762",
-    "Version": 0.08,
+    "Version": 0.09,
     "Readme": "MMDUtility_Readme.txt",
-    "SHA1Hash": "608dddd7be7f2cc1342eb329d45e97853b32acbc",
+    "SHA1Hash": "03865f4cdcd710f7e6b94105b07d2b6fc0fe20db",
     "InstallDir": [
       [ "plugin/", "" ],
       [ "MMDUtility_Readme.txt", "plugin/MMDUtility" ]
