@@ -14,9 +14,9 @@
   {
     "Title": "MMDUtility",
     "URL": "https://bowlroll.net/file/121762",
-    "Version": 0.10,
+    "Version": 0.11,
     "Readme": "MMDUtility_Readme.txt",
-    "SHA1Hash": "79c39f638bca7f44b3ac80703a634728d28fa56b",
+    "SHA1Hash": "769e0e5b0faf20328bcf3acc5e6a4e3129c80504",
     "InstallDir": [
       [ "plugin/", "" ],
       [ "MMDUtility_Readme.txt", "plugin/MMDUtility" ]
@@ -25,9 +25,9 @@
   {
     "Title": "Effekseer for MMD",
     "URL": "https://bowlroll.net/file/121167",
-    "Version": 0.22,
+    "Version": 0.23,
     "Readme": "EffekseerForMMD_Readme.txt",
-    "SHA1Hash": "ce8d093b350ebd27bdf5776cf2594df3dbf5e662",
+    "SHA1Hash": "95be4887d12d00d75d0c650b6ef2b00cc78f9bee",
     "InstallDir": [
       [ "plugin/", "" ],
       [ "EffekseerForMMD_Readme.txt", "plugin/EffekseerForMMD" ]
