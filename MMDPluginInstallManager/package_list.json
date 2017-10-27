@@ -2,11 +2,12 @@
   {
     "Title": "MMDPlugin",
     "URL": "https://bowlroll.net/file/121761",
-    "Version": 0.38,
+    "Version": 0.41,
     "Readme": "MMDPlugin_Readme.txt",
-    "SHA1Hash": "e86448a71777195c01af8372efc271c7dfa73d51",
+    "SHA1Hash": "682cc15082b3db2cff6808480d12f4e92413e085",
     "InstallDir": [
       [ "d3d9.dll", "" ],
+      [ "d3dx9_43.dll", "" ],
       [ "MMDPlugin.dll", "" ],
       [ "MMDPlugin_Readme.txt", "plugin/MMDPlugin/" ]
     ]
