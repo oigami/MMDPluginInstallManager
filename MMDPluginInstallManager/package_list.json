@@ -26,9 +26,9 @@
   {
     "Title": "Effekseer for MMD",
     "URL": "https://bowlroll.net/file/121167",
-    "Version": 0.24,
+    "Version": 0.25,
     "Readme": "EffekseerForMMD_Readme.txt",
-    "SHA1Hash": "b8f8901cf70e4d804fb138eb08f845e51595625b",
+    "SHA1Hash": "ab16e90d4b6c7bafb4505589c3ba7de864e55121",
     "InstallDir": [
       [ "plugin/", "" ],
       [ "EffekseerForMMD_Readme.txt", "plugin/EffekseerForMMD" ]
